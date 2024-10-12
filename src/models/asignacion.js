@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+//const Ficha = require('../models/ficha');
+//const Instructor = require('../models/Instructor'); 
 
 const Asignacion = sequelize.define('Asignacion', {
   id: {
@@ -38,5 +40,8 @@ const Asignacion = sequelize.define('Asignacion', {
   tableName: 'asignacion',
   timestamps: false
 });
+
+//Asignacion.belongsTo(Ficha, { foreignKey: 'ficha', targetKey: 'codigo' });
+//Asignacion.belongsTo(Instructor, { foreignKey: 'instructor', targetKey: 'nombre' });
 
 module.exports = Asignacion;

@@ -9,6 +9,7 @@ const coordinadorRoutes = require('./routes/coordinadorRoutes')
 const jornadaRoutes = require('./routes/jornadaRoutes')
 const fichaRoutes = require('./routes/fichaRoutes')
 const asignacionRoutes = require('./routes/asignacionRoutes')
+const emailMasivoRoutes = require('./routes/emailMasivoRoutes');
 
 const app = express()
 app.use(cors()); // Esto permite todos los dominios
@@ -22,7 +23,7 @@ app.use('/fichaSenaService', coordinadorRoutes)
 app.use('/fichaSenaService', jornadaRoutes)
 app.use('/fichaSenaService', fichaRoutes)
 app.use('/fichaSenaService', asignacionRoutes)
-
+app.use('/fichaSenaService', emailMasivoRoutes)
 
 const PORT = process.env.PORT || 3000
 

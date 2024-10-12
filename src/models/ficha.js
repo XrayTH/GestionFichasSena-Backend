@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db'); // Ajusta la importación según tu configuración
+//const Asignacion = require('../models/asignacion');
 
 const Ficha = db.define('ficha', {
   codigo: {
@@ -48,5 +49,7 @@ const Ficha = db.define('ficha', {
   tableName: 'ficha',
   timestamps: false, // Si no usas createdAt y updatedAt
 });
+
+//Ficha.hasMany(Asignacion, { foreignKey: 'ficha', as: 'asignaciones' });
 
 module.exports = Ficha;
