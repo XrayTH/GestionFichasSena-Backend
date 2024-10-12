@@ -13,14 +13,37 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Función para obtener los horarios de un instructor
+// Definir el orden correcto de los días de la semana
+const diasDeLaSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+// Función para obtener los horarios de un instructor, filtrando por el mes actual y ordenando los días de la semana
 async function obtenerHorariosInstructor(instructorId) {
   // Consultar todas las asignaciones del instructor
   const asignaciones = await Asignacion.findAll({ where: { instructor: instructorId } });
 
   const horarios = [];
+  const fechaActual = new Date();
 
-  for (const asignacion of asignaciones) {
+  // Filtrar asignaciones que caen dentro del mes actual
+  const asignacionesFiltradas = asignaciones.filter(asignacion => {
+    const inicio = new Date(asignacion.inicio);
+    const fin = new Date(asignacion.fin);
+
+    // Comparar el mes y año de inicio y fin con el mes y año actual
+    return (inicio.getFullYear() === fechaActual.getFullYear() && inicio.getMonth() === fechaActual.getMonth()) ||
+           (fin.getFullYear() === fechaActual.getFullYear() && fin.getMonth() === fechaActual.getMonth());
+  });
+
+  // Ordenar las asignaciones por el día de la semana, respetando el orden de los días
+  const asignacionesOrdenadas = asignacionesFiltradas.sort((a, b) => {
+    const diaA = diasDeLaSemana.indexOf(a.dia.charAt(0).toUpperCase() + a.dia.slice(1).toLowerCase()); // Capitalizar el primer carácter
+    const diaB = diasDeLaSemana.indexOf(b.dia.charAt(0).toUpperCase() + b.dia.slice(1).toLowerCase());
+    
+    return diaA - diaB;
+  });
+
+  // Generar el listado de horarios con los datos de cada asignación
+  for (const asignacion of asignacionesOrdenadas) {
     // Consultar los detalles de la ficha asociados con la asignación
     const ficha = await Ficha.findOne({ where: { codigo: asignacion.ficha } });
 
@@ -32,6 +55,7 @@ async function obtenerHorariosInstructor(instructorId) {
       Programa: ${ficha.programa}
       Municipio: ${ficha.municipio}
       Ambiente: ${ficha.ambiente}
+      fecha de fin: ${asignacion.fin}
       `);
     }
   }
@@ -44,6 +68,7 @@ async function enviarCorreosMasivos(req, res) {
   // Arrays para almacenar correos enviados y no enviados
   const enviados = [];
   const noEnviados = [];
+  const fechaActual = new Date();
 
   try {
     // Obtener todos los instructores
