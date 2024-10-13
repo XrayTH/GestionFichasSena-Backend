@@ -11,6 +11,12 @@
 # production
 /build
 
+# Ignora todo el contenido de la carpeta
+uploads/*
+
+# Excepto el archivo .gitkeep
+!uploads/.gitkeep
+
 # misc
 .DS_Store
 .env
