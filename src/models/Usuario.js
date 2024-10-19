@@ -20,12 +20,22 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.STRING(50),
     allowNull: true
   },
-  editar: {
+  tablas: {  // Nuevo campo añadido
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false
   },
-  crear: {
+  verProgramacion: {  // Nuevo campo añadido
+    type: DataTypes.TINYINT,
+    defaultValue: 0,
+    allowNull: false
+  },
+  editProgramacion: {  // Nuevo campo añadido
+    type: DataTypes.TINYINT,
+    defaultValue: 0,
+    allowNull: false
+  },
+  email: {  // Nuevo campo añadido
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false

@@ -23,7 +23,7 @@ exports.getUsuarioById = async (req, res) => {
 
 //POST nuevo usuario
 exports.createUsuario = async (req, res) => {
-  const { usuario, contraseña, rol, editar = 0, crear = 0, gestionarUsuarios = 0 } = req.body;
+  const { usuario, contraseña, rol, tablas = 0, verProgramacion = 0, editProgramacion = 0, email = 0, gestionarUsuarios = 0 } = req.body;
 
   // Validaciones para asegurar que se reciban usuario y contraseña
   if (!usuario || !contraseña) {
@@ -35,8 +35,10 @@ exports.createUsuario = async (req, res) => {
       usuario,
       contraseña,
       rol: rol || '', // Asigna un valor por defecto si rol no está definido
-      editar,
-      crear,
+      tablas,
+      verProgramacion,
+      editProgramacion,
+      email,
       gestionarUsuarios
     });
 
@@ -59,10 +61,9 @@ exports.eliminarUsuarioPorId = async (req, res) => {
   }
 };
 
-
 //PUT actualizar usuario por ID
 exports.updateUsuarioById = async (req, res) => {
-  const { usuario, contraseña, rol, editar, crear, gestionarUsuarios } = req.body;
+  const { usuario, contraseña, rol, tablas, verProgramacion, editProgramacion, email, gestionarUsuarios } = req.body;
 
   // Validaciones para asegurarse de que usuario y contraseña no estén vacíos
   if (usuario === undefined || contraseña === undefined) {
@@ -78,8 +79,10 @@ exports.updateUsuarioById = async (req, res) => {
       usuario,
       contraseña,
       rol: rol !== undefined ? rol : usuarioExistente.rol,
-      editar: editar !== undefined ? editar : usuarioExistente.editar,
-      crear: crear !== undefined ? crear : usuarioExistente.crear,
+      tablas: tablas !== undefined ? tablas : usuarioExistente.tablas,
+      verProgramacion: verProgramacion !== undefined ? verProgramacion : usuarioExistente.verProgramacion,
+      editProgramacion: editProgramacion !== undefined ? editProgramacion : usuarioExistente.editProgramacion,
+      email: email !== undefined ? email : usuarioExistente.email,
       gestionarUsuarios: gestionarUsuarios !== undefined ? gestionarUsuarios : usuarioExistente.gestionarUsuarios
     });
 
@@ -88,7 +91,6 @@ exports.updateUsuarioById = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
-
 
 //POST verificar usuario y contraseña
 exports.verificarUsuario = async (req, res) => {
