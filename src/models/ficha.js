@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const db = require('../config/db'); // Ajusta la importación según tu configuración
+const db = require('../config/db'); 
 //const Asignacion = require('../models/asignacion');
 
 const Ficha = db.define('ficha', {
@@ -15,7 +15,7 @@ const Ficha = db.define('ficha', {
   },
   programa: {
     type: DataTypes.STRING(50),
-    allowNull: true, // Permite que sea nulo
+    allowNull: true, 
   },
   gestor: {
     type: DataTypes.STRING(50),
@@ -35,11 +35,11 @@ const Ficha = db.define('ficha', {
   },
   inicio: {
     type: DataTypes.DATE,
-    allowNull: true, // Permite que sea nulo
+    allowNull: true, 
   },
   fin: {
     type: DataTypes.DATE,
-    allowNull: true, // Permite que sea nulo
+    allowNull: true, 
   },
   requerimientos: {
     type: DataTypes.TEXT,
@@ -47,7 +47,7 @@ const Ficha = db.define('ficha', {
   },
 }, {
   tableName: 'ficha',
-  timestamps: false, // Si no usas createdAt y updatedAt
+  timestamps: false, 
 });
 
 //Ficha.hasMany(Asignacion, { foreignKey: 'ficha', as: 'asignaciones' });

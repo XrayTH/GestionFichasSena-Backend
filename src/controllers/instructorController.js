@@ -1,6 +1,5 @@
-const Instructor = require('../models/Instructor'); // Ajusta la ruta a tu modelo
+const Instructor = require('../models/Instructor'); 
 
-// Obtener todos los instructores
 exports.obtenerTodos = async (req, res) => {
   try {
     const instructores = await Instructor.findAll();
@@ -10,11 +9,9 @@ exports.obtenerTodos = async (req, res) => {
   }
 };
 
-// Crear un nuevo instructor
 exports.crear = async (req, res) => {
   const { documento, nombre, email, telefono } = req.body;
 
-  // Validación para que no se permitan valores vacíos o nulos
   if (!documento || !nombre) {
     return res.status(400).json({ message: 'El campo documento y nombre son obligatorios' });
   }
@@ -32,7 +29,6 @@ exports.crear = async (req, res) => {
   }
 };
 
-// Obtener instructor por documento
 exports.obtenerPorDocumento = async (req, res) => {
   const { documento } = req.params;
   try {
@@ -47,7 +43,6 @@ exports.obtenerPorDocumento = async (req, res) => {
   }
 };
 
-// Obtener instructor por nombre
 exports.obtenerPorNombre = async (req, res) => {
   const { nombre } = req.params;
   try {
@@ -62,12 +57,10 @@ exports.obtenerPorNombre = async (req, res) => {
   }
 };
 
-// Actualizar instructor por documento
 exports.actualizarPorDocumento = async (req, res) => {
   const { documento } = req.params;
   const { nombre, email, telefono, areaTematica } = req.body;
 
-  // Validación para que no se actualicen con valores vacíos o nulos
   if (!documento || !nombre) {
     return res.status(400).json({ message: 'El campo documento y nombre son obligatorios' });
   }
@@ -89,7 +82,6 @@ exports.actualizarPorDocumento = async (req, res) => {
   }
 };
 
-// Eliminar instructor por documento
 exports.eliminarPorDocumento = async (req, res) => {
   const { documento } = req.params;
 

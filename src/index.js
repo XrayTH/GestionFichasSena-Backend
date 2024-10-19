@@ -13,10 +13,9 @@ const emailMasivoRoutes = require('./routes/emailMasivoRoutes');
 const emailRoutes = require('./routes/emailRoutes')
 
 const app = express()
-app.use(cors()); // Esto permite todos los dominios
+app.use(cors()); 
 app.use(express.json())
 
-//Rutas
 app.use('/fichaSenaService', usuarioRoutes)
 app.use('/fichaSenaService', programaRoutes)
 app.use('/fichaSenaService', intructorRoutes)

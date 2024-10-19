@@ -2,7 +2,6 @@ const { Op } = require('sequelize');
 const Asignacion = require('../models/asignacion');
 const Ficha = require('../models/ficha');
 
-// Obtener todas las asignaciones
 exports.getAllAsignaciones = async (req, res) => {
   try {
     const asignaciones = await Asignacion.findAll();
@@ -12,7 +11,6 @@ exports.getAllAsignaciones = async (req, res) => {
   }
 };
 
-// Obtener asignación por ID
 exports.getAsignacionById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -27,7 +25,6 @@ exports.getAsignacionById = async (req, res) => {
   }
 };
 
-// Obtener asignaciones por ficha
 exports.getAsignacionesByFicha = async (req, res) => {
   const { ficha } = req.params;
   try {
@@ -38,7 +35,6 @@ exports.getAsignacionesByFicha = async (req, res) => {
   }
 };
 
-// Obtener asignaciones por instructor
 exports.getAsignacionesByInstructor = async (req, res) => {
   const { instructor } = req.params;
   try {
@@ -49,7 +45,6 @@ exports.getAsignacionesByInstructor = async (req, res) => {
   }
 };
 
-// Obtener asignaciones por día
 exports.getAsignacionesByDia = async (req, res) => {
   const { dia } = req.params;
   try {
@@ -60,7 +55,6 @@ exports.getAsignacionesByDia = async (req, res) => {
   }
 };
 
-// Obtener asignaciones por jornada
 exports.getAsignacionesByJornada = async (req, res) => {
   const { jornada } = req.params;
   try {
@@ -71,7 +65,6 @@ exports.getAsignacionesByJornada = async (req, res) => {
   }
 };
 
-// Crear una nueva asignación
 exports.createAsignacion = async (req, res) => {
   const { ficha, dia, jornada, instructor, inicio, fin } = req.body;
 
@@ -80,30 +73,27 @@ exports.createAsignacion = async (req, res) => {
   }
 
   try {
-    // Obtener la ficha asociada para verificar el rango de fechas
     const fichaData = await Ficha.findByPk(ficha);
     if (!fichaData) {
       return res.status(400).json({ error: 'Ficha no encontrada' });
     }
 
-    // Verificar si las fechas de la asignación están dentro del rango de la ficha
     if (inicio < fichaData.inicio || fin > fichaData.fin) {
       return res.status(400).json({
         error: `Las fechas de la asignación deben estar dentro del rango de la ficha (inicio: ${fichaData.inicio}, fin: ${fichaData.fin})`
       });
     }
 
-    // Verificar si ya existe una asignación en el mismo día y jornada que se superponga en el tiempo para el mismo instructor
     const existingAsignacion = await Asignacion.findOne({
       where: {
         dia,
         jornada,
-        instructor, // Asegúrate de que sea el mismo instructor
+        instructor, 
         inicio: {
-          [Op.lt]: fin // Comienza antes de que la nueva asignación termine
+          [Op.lt]: fin 
         },
         fin: {
-          [Op.gt]: inicio // Termina después de que la nueva asignación comienza
+          [Op.gt]: inicio 
         }
       }
     });
@@ -128,7 +118,6 @@ exports.createAsignacion = async (req, res) => {
   }
 };
 
-// Actualizar una asignación por ID
 exports.updateAsignacionById = async (req, res) => {
   const { id } = req.params;
   const { ficha, dia, jornada, instructor, inicio, fin } = req.body;
@@ -143,32 +132,28 @@ exports.updateAsignacionById = async (req, res) => {
       return res.status(404).json({ error: 'Asignación no encontrada' });
     }
 
-    // Obtener la ficha asociada para verificar el rango de fechas
     const fichaData = await Ficha.findByPk(ficha);
     if (!fichaData) {
       return res.status(400).json({ error: 'Ficha no encontrada' });
     }
 
-    // Verificar si las fechas de la asignación están dentro del rango de la ficha
     if (inicio < fichaData.inicio || fin > fichaData.fin) {
       return res.status(400).json({
         error: `Las fechas de la asignación deben estar dentro del rango de la ficha (inicio: ${fichaData.inicio}, fin: ${fichaData.fin})`
       });
     }
 
-    // Verificar si ya existe una asignación en el mismo día y jornada que se superponga en el tiempo para el mismo instructor
     const existingAsignacion = await Asignacion.findOne({
       where: {
         dia,
         jornada,
-        instructor, // Asegúrate de que sea el mismo instructor
+        instructor, 
         inicio: {
-          [Op.lt]: fin // Comienza antes de que la asignación actual termine
+          [Op.lt]: fin 
         },
         fin: {
-          [Op.gt]: inicio // Termina después de que la asignación actual comienza
+          [Op.gt]: inicio 
         },
-        // Excluir la asignación que se está actualizando
         id: {
           [Op.ne]: id
         }
@@ -188,7 +173,6 @@ exports.updateAsignacionById = async (req, res) => {
   }
 };
 
-// Borrar asignación por ID
 exports.deleteAsignacionById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -204,28 +188,24 @@ exports.deleteAsignacionById = async (req, res) => {
   }
 };
 
-// Obtener el número de asignaciones de un instructor en un rango de fechas
 exports.getNumeroAsignacionesPorInstructorYFechas = async (req, res) => {
   const { instructor } = req.params;
-  const { fechaInicio, fechaFin } = req.query;  // Fechas en formato 'YYYY-MM-DD'
+  const { fechaInicio, fechaFin } = req.query;  
 
-  // Validar que se hayan proporcionado ambas fechas
   if (!fechaInicio || !fechaFin) {
     return res.status(400).json({ error: 'Se requiere un rango de fechas (fechaInicio y fechaFin)' });
   }
 
   try {
-    // Contar el número de asignaciones del instructor dentro del rango de fechas
     const numeroAsignaciones = await Asignacion.count({
       where: {
         instructor,
         inicio: {
-          [Op.between]: [fechaInicio, fechaFin]  // Filtrar por fechas
+          [Op.between]: [fechaInicio, fechaFin]  
         }
       }
     });
 
-    // Retornar el número de asignaciones
     res.json({ numeroAsignaciones });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener el número de asignaciones' });

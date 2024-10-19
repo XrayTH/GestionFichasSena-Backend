@@ -1,6 +1,5 @@
 const Ficha = require('../models/ficha');
 
-// Ver todas las fichas
 exports.verTodosFichas = async (req, res) => {
   try {
     const fichas = await Ficha.findAll();
@@ -10,7 +9,6 @@ exports.verTodosFichas = async (req, res) => {
   }
 };
 
-// Buscar una ficha por código
 exports.buscarFicha = async (req, res) => {
   const { codigo } = req.params;
   try {
@@ -22,20 +20,19 @@ exports.buscarFicha = async (req, res) => {
   }
 };
 
-// Crear una ficha
 exports.crearFicha = async (req, res) => {
   const { codigo, coordinador, programa, gestor, ambiente, municipio, ubicacionGPS, inicio, fin, requerimientos } = req.body;
   try {
     const nuevaFicha = await Ficha.create({
       codigo,
       coordinador,
-      programa: programa || null, // Permite que sea nulo
+      programa: programa || null, 
       gestor,
       ambiente,
       municipio,
       ubicacionGPS,
-      inicio: inicio || null, // Permite que sea nulo
-      fin: fin || null, // Permite que sea nulo
+      inicio: inicio || null, 
+      fin: fin || null, 
       requerimientos
     });
     res.status(201).json(nuevaFicha);
@@ -44,7 +41,6 @@ exports.crearFicha = async (req, res) => {
   }
 };
 
-// Actualizar una ficha
 exports.actualizarFicha = async (req, res) => {
   const { codigo } = req.params;
   const { coordinador, programa, gestor, ambiente, municipio, ubicacionGPS, inicio, fin, requerimientos } = req.body;
@@ -54,13 +50,13 @@ exports.actualizarFicha = async (req, res) => {
 
     await ficha.update({
       coordinador,
-      programa: programa || null, // Permite que sea nulo
+      programa: programa || null, 
       gestor,
       ambiente,
       municipio,
       ubicacionGPS,
-      inicio: inicio || null, // Permite que sea nulo
-      fin: fin || null, // Permite que sea nulo
+      inicio: inicio || null, 
+      fin: fin || null, 
       requerimientos
     });
     res.json(ficha);
@@ -69,7 +65,6 @@ exports.actualizarFicha = async (req, res) => {
   }
 };
 
-// Borrar una ficha
 exports.borrarFicha = async (req, res) => {
   const { codigo } = req.params;
   try {

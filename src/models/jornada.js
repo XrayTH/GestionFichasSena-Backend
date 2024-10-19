@@ -1,5 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Ajusta la ruta según tu configuración
+const sequelize = require('../config/db'); 
 
 class Jornada extends Model {}
 
@@ -20,7 +20,7 @@ Jornada.init(
     sequelize,
     modelName: 'jornada',
     tableName: 'jornada',
-    timestamps: false, // Si no necesitas campos createdAt/updatedAt
+    timestamps: false, 
   }
 );
 

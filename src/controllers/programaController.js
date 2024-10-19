@@ -1,10 +1,8 @@
-const Programa = require('../models/Programa'); // Asegúrate de ajustar la ruta a tu modelo
+const Programa = require('../models/Programa'); 
 
-// Crear un nuevo programa
 exports.crear = async (req, res) => {
   const { nombre, nombreCorto } = req.body;
   
-  // Validaciones
   if (!nombre || !nombreCorto) {
     return res.status(400).json({ message: 'Los campos nombre y nombreCorto son obligatorios' });
   }
@@ -29,12 +27,10 @@ exports.obtenerProgramas = async (req, res) => {
     }
   };
 
-// Actualizar programa por ID
 exports.actualizarPorId = async (req, res) => {
   const { id } = req.params;
   const { nombre, nombreCorto } = req.body;
 
-  // Validaciones
   if (!nombre || !nombreCorto) {
     return res.status(400).json({ message: 'Los campos nombre y nombreCorto son obligatorios' });
   }
@@ -54,39 +50,36 @@ exports.actualizarPorId = async (req, res) => {
   }
 };
 
-// Obtener programa por nombre
 exports.obtenerPorNombre = async (req, res) => {
     const { nombre } = req.params;
 
     try {
-        const programa = await Programa.findOne({ where: { nombre } }); // Busca un programa por nombre
+        const programa = await Programa.findOne({ where: { nombre } }); 
         if (programa) {
-            res.status(200).json(programa); // Devuelve el programa encontrado
+            res.status(200).json(programa); 
         } else {
-            res.status(404).json({ message: 'Programa no encontrado' }); // Si no se encuentra el programa
+            res.status(404).json({ message: 'Programa no encontrado' }); 
         }
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el programa', error }); // Manejo de errores
+        res.status(500).json({ message: 'Error al obtener el programa', error }); 
     }
 };
 
-// Obtener programa por ID
 exports.obtenerPorId = async (req, res) => {
     const { id } = req.params;
   
     try {
-      const programa = await Programa.findByPk(id); // Utiliza findByPk para encontrar el programa por ID
+      const programa = await Programa.findByPk(id); 
       if (programa) {
-        res.status(200).json(programa); // Devuelve el programa encontrado
+        res.status(200).json(programa); 
       } else {
-        res.status(404).json({ message: 'Programa no encontrado' }); // Si no se encuentra el programa
+        res.status(404).json({ message: 'Programa no encontrado' }); 
       }
     } catch (error) {
-      res.status(500).json({ message: 'Error al obtener el programa', error }); // Manejo de errores
+      res.status(500).json({ message: 'Error al obtener el programa', error }); 
     }
   };  
 
-// Eliminar programa por ID
 exports.eliminarPorId = async (req, res) => {
   const { id } = req.params;
 

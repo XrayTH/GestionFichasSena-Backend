@@ -19,7 +19,7 @@ const Programa = sequelize.define('Programa', {
   },
 }, {
   tableName: 'programa',
-  timestamps: false, // Si no quieres que Sequelize maneje los campos `createdAt` y `updatedAt`
+  timestamps: false, 
   charset: 'utf16',
   collate: 'utf16_spanish_ci',
 });

@@ -4,7 +4,6 @@ const { sendEmail } = require('../controllers/emailController');
 
 const router = express.Router();
 
-// Configurar multer para manejar múltiples archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'src/uploads/');
@@ -16,7 +15,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Cambia upload.single a upload.array para permitir múltiples archivos
 router.post('/send-email', upload.array('files'), sendEmail);
 
 module.exports = router;

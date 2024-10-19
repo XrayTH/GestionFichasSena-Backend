@@ -4,7 +4,6 @@ exports.crearJornada = async (req, res) => {
   try {
     const { nombre } = req.body;
 
-    // Validación: Asegurarse de que se incluya un nombre
     if (!nombre) {
       return res.status(400).json({ error: 'El nombre es obligatorio' });
     }
@@ -19,7 +18,7 @@ exports.crearJornada = async (req, res) => {
 exports.obtenerJornadas = async (req, res) => {
   try {
     const jornadas = await Jornada.findAll({
-      order: [['id', 'ASC']], // Ordena por el campo 'id' de menor a mayor
+      order: [['id', 'ASC']], 
     });
     return res.status(200).json(jornadas);
   } catch (error) {
@@ -45,7 +44,6 @@ exports.actualizarJornada = async (req, res) => {
     const { id } = req.params;
     const { nombre } = req.body;
 
-    // Validación: Asegurarse de que se incluya un nombre
     if (!nombre) {
       return res.status(400).json({ error: 'El nombre es obligatorio' });
     }

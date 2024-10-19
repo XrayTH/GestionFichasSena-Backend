@@ -21,9 +21,8 @@ const sendEmail = async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-      // Aumentar el tiempo de espera
-      timeout: 50000, // Tiempo de espera de 5000 ms (5 segundos)
-      connectionTimeout: 50000, // Tiempo de espera para establecer la conexión
+      timeout: 50000, 
+      connectionTimeout: 50000, 
     });
 
     const attachments = files ? files.map(file => ({
@@ -39,7 +38,6 @@ const sendEmail = async (req, res) => {
       attachments: attachments,
     };
 
-    // Intentar enviar el correo
     await transporter.sendMail(mailOptions);
     res.status(200).send('Correos enviados con éxito');
   } catch (error) {

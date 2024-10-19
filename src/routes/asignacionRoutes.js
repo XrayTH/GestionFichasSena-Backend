@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const asignacionController = require('../controllers/asignacionController');
 
-// Rutas para las asignaciones
 router.get('/asignacion', asignacionController.getAllAsignaciones);
 router.get('/asignacion/:id', asignacionController.getAsignacionById);
 router.get('/asignacion/ficha/:ficha', asignacionController.getAsignacionesByFicha);

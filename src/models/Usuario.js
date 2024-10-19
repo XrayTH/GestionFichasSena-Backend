@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Asegúrate de que esta ruta sea correcta
+const sequelize = require('../config/db'); 
 
 const Usuario = sequelize.define('Usuario', {
   id: {
@@ -20,22 +20,22 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.STRING(50),
     allowNull: true
   },
-  tablas: {  // Nuevo campo añadido
+  tablas: {  
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false
   },
-  verProgramacion: {  // Nuevo campo añadido
+  verProgramacion: {  
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false
   },
-  editProgramacion: {  // Nuevo campo añadido
+  editProgramacion: {  
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false
   },
-  email: {  // Nuevo campo añadido
+  email: {  
     type: DataTypes.TINYINT,
     defaultValue: 0,
     allowNull: false
@@ -46,8 +46,8 @@ const Usuario = sequelize.define('Usuario', {
     allowNull: false
   }
 }, {
-  tableName: 'usuarios', // Nombre de la tabla
-  timestamps: false // Cambia esto si estás usando timestamps
+  tableName: 'usuarios', 
+  timestamps: false 
 });
 
 module.exports = Usuario;

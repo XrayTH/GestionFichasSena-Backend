@@ -20,7 +20,6 @@ router.put('/usuarios/:id', updateUsuarioById);
 
 router.post('/usuarios/verificar', verificarUsuario);
 
-// Eliminar un usuario por ID
 router.delete('/usuarios/:id', eliminarUsuarioPorId);
 
 module.exports = router;

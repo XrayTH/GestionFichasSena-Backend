@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Asegúrate de ajustar la ruta al archivo de configuración de tu base de datos
+const sequelize = require('../config/db'); 
 
 const Instructor = sequelize.define('Instructor', {
   documento: {
