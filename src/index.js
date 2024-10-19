@@ -16,6 +16,10 @@ const app = express()
 app.use(cors()); 
 app.use(express.json())
 
+app.get('/fichaSenaService/status', (req, res) => {
+  res.send({ message: 'El backend está funcionando correctamente' });
+});
+
 app.use('/fichaSenaService', usuarioRoutes)
 app.use('/fichaSenaService', programaRoutes)
 app.use('/fichaSenaService', intructorRoutes)
