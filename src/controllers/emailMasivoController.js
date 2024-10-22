@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const diasDeLaSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const diasDeLaSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
 
 async function obtenerHorariosInstructor(instructorId) {
   const asignaciones = await Asignacion.findAll({ where: { instructor: instructorId } });

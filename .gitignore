@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+build
 
 # Ignora todo el contenido de la carpeta
 uploads/*
