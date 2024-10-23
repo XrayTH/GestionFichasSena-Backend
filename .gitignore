@@ -12,10 +12,10 @@
 build
 
 # Ignora todo el contenido de la carpeta
-uploads/*
+src/uploads/*
 
 # Excepto el archivo .gitkeep
-!uploads/.gitkeep
+!src/uploads/.gitkeep
 
 # misc
 .DS_Store
