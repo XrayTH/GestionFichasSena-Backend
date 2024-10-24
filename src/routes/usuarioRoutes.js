@@ -5,7 +5,8 @@ const {
   createUsuario, 
   updateUsuarioById, 
   verificarUsuario,
-  eliminarUsuarioPorId
+  eliminarUsuarioPorId,
+  verificarTokenYPermisos 
 } = require('../controllers/usuarioController');
 
 const router = express.Router();
@@ -22,4 +23,7 @@ router.post('/usuarios/verificar', verificarUsuario);
 
 router.delete('/usuarios/:id', eliminarUsuarioPorId);
 
+router.post('/usuarios/verificar-permisos', verificarTokenYPermisos);
+
 module.exports = router;
+

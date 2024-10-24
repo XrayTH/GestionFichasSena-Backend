@@ -1,4 +1,8 @@
 const Usuario = require('../models/Usuario');
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
+
+const JWT_SECRET = process.env.TOKEN_SECRET;
 
 exports.getUsuarios = async (req, res) => {
   try {
@@ -94,8 +98,65 @@ exports.verificarUsuario = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
-    res.json({ message: 'Usuario y contraseña correctos', usuario: usuarioExistente });
+    const token = jwt.sign(
+      {
+        id: usuarioExistente.id,
+        usuario: usuarioExistente.usuario,
+        rol: usuarioExistente.rol,
+        permisos: {
+          tablas: usuarioExistente.tablas,
+          verProgramacion: usuarioExistente.verProgramacion,
+          editProgramacion: usuarioExistente.editProgramacion,
+          email: usuarioExistente.email,
+          gestionarUsuarios: usuarioExistente.gestionarUsuarios,
+        }
+      },
+      JWT_SECRET,
+      { expiresIn: '1h' } 
+    );
+
+    res.json({ message: 'Usuario y contraseña correctos', usuario: usuarioExistente, token });
   } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.verificarTokenYPermisos = async (req, res) => {
+  const { token, permisos } = req.body;
+
+  if (!token || !permisos) {
+    return res.status(400).json({ message: 'Token y permisos son necesarios' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const usuarioExistente = await Usuario.findByPk(decoded.id);
+    if (!usuarioExistente) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    const permisosDelServidor = {
+      tablas: Boolean(usuarioExistente.tablas),
+      verProgramacion: Boolean(usuarioExistente.verProgramacion),
+      editProgramacion: Boolean(usuarioExistente.editProgramacion),
+      email: Boolean(usuarioExistente.email),
+      gestionarUsuarios: Boolean(usuarioExistente.gestionarUsuarios),
+    };
+
+    const permisosCoinciden = Object.keys(permisosDelServidor).every(
+      permiso => permisosDelServidor[permiso] === permisos[permiso]
+    );
+
+    if (!permisosCoinciden) {
+      return res.status(403).json({ message: 'Permisos no coinciden' });
+    }
+
+    res.json({ message: 'Token y permisos válidos', tokenValido: true, permisosValidos: true});
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expirado' });
+    } else if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Token inválido' });
+    }
     res.status(500).json({ message: err.message });
   }
 };
