@@ -20,7 +20,9 @@ exports.crear = async (req, res) => {
 
 exports.obtenerProgramas = async (req, res) => {
     try {
-      const programas = await Programa.findAll();
+      const programas = await Programa.findAll({
+        order: [['nombre', 'ASC']], 
+      });
       res.status(200).json(programas);
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener programas', error });
