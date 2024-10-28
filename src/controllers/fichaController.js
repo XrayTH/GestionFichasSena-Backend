@@ -2,7 +2,9 @@ const Ficha = require('../models/ficha');
 
 exports.verTodosFichas = async (req, res) => {
   try {
-    const fichas = await Ficha.findAll();
+    const fichas = await Ficha.findAll({
+      order: [['codigo', 'ASC']] 
+    });
     res.json(fichas);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las fichas.' });

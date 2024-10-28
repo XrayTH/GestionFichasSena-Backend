@@ -2,7 +2,9 @@ const Coordinador = require('../models/Coordinador');
 
 exports.obtenerTodos = async (req, res) => {
   try {
-    const coordinadores = await Coordinador.findAll();
+    const coordinadores = await Coordinador.findAll({
+      order: [['nombre', 'ASC']], 
+    });
     res.status(200).json(coordinadores);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los coordinadores', error });

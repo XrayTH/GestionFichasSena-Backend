@@ -2,12 +2,15 @@ const Instructor = require('../models/Instructor');
 
 exports.obtenerTodos = async (req, res) => {
   try {
-    const instructores = await Instructor.findAll();
+    const instructores = await Instructor.findAll({
+      order: [['nombre', 'ASC']], 
+    });
     res.status(200).json(instructores);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los instructores', error });
   }
 };
+
 
 exports.crear = async (req, res) => {
   const { documento, nombre, email, telefono } = req.body;

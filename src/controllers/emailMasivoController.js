@@ -46,6 +46,7 @@ async function obtenerHorariosInstructor(instructorId) {
       Programa: ${ficha.programa}
       Municipio: ${ficha.municipio}
       Ambiente: ${ficha.ambiente}
+      fecha de inicio: ${asignacion.inicio}
       fecha de fin: ${asignacion.fin}
       `);
     }

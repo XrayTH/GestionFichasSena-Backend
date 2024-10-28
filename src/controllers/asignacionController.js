@@ -4,7 +4,9 @@ const Ficha = require('../models/ficha');
 
 exports.getAllAsignaciones = async (req, res) => {
   try {
-    const asignaciones = await Asignacion.findAll();
+    const asignaciones = await Asignacion.findAll({
+      order: [['ficha', 'ASC']]
+    });
     res.json(asignaciones);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las asignaciones' });
@@ -28,7 +30,10 @@ exports.getAsignacionById = async (req, res) => {
 exports.getAsignacionesByFicha = async (req, res) => {
   const { ficha } = req.params;
   try {
-    const asignaciones = await Asignacion.findAll({ where: { ficha } });
+    const asignaciones = await Asignacion.findAll({
+      where: { ficha },
+      order: [['ficha', 'ASC']]
+    });
     res.json(asignaciones);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las asignaciones por ficha' });
@@ -38,7 +43,10 @@ exports.getAsignacionesByFicha = async (req, res) => {
 exports.getAsignacionesByInstructor = async (req, res) => {
   const { instructor } = req.params;
   try {
-    const asignaciones = await Asignacion.findAll({ where: { instructor } });
+    const asignaciones = await Asignacion.findAll({
+      where: { instructor },
+      order: [['ficha', 'ASC']]
+    });
     res.json(asignaciones);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las asignaciones por instructor' });
@@ -48,7 +56,10 @@ exports.getAsignacionesByInstructor = async (req, res) => {
 exports.getAsignacionesByDia = async (req, res) => {
   const { dia } = req.params;
   try {
-    const asignaciones = await Asignacion.findAll({ where: { dia } });
+    const asignaciones = await Asignacion.findAll({
+      where: { dia },
+      order: [['ficha', 'ASC']]
+    });
     res.json(asignaciones);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las asignaciones por día' });
@@ -58,12 +69,16 @@ exports.getAsignacionesByDia = async (req, res) => {
 exports.getAsignacionesByJornada = async (req, res) => {
   const { jornada } = req.params;
   try {
-    const asignaciones = await Asignacion.findAll({ where: { jornada } });
+    const asignaciones = await Asignacion.findAll({
+      where: { jornada },
+      order: [['ficha', 'ASC']]
+    });
     res.json(asignaciones);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las asignaciones por jornada' });
   }
 };
+
 
 exports.createAsignacion = async (req, res) => {
   const { ficha, dia, jornada, instructor, inicio, fin } = req.body;
@@ -84,23 +99,35 @@ exports.createAsignacion = async (req, res) => {
       });
     }
 
-    const existingAsignacion = await Asignacion.findOne({
+    const existingAsignacionFicha = await Asignacion.findOne({
       where: {
+        ficha,
         dia,
         jornada,
-        instructor, 
-        inicio: {
-          [Op.lt]: fin 
-        },
-        fin: {
-          [Op.gt]: inicio 
-        }
+        inicio: { [Op.lt]: fin },
+        fin: { [Op.gt]: inicio }
       }
     });
 
-    if (existingAsignacion) {
+    if (existingAsignacionFicha) {
       return res.status(400).json({ 
-        error: `Ya existe una asignación para el instructor ${instructor} en este día y jornada que se superpone con el rango de tiempo proporcionado. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacion)}` 
+        error: `Ya existe una asignación para la misma ficha en este día, jornada y rango de tiempo. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacionFicha)}`
+      });
+    }
+
+    const existingAsignacionInstructor = await Asignacion.findOne({
+      where: {
+        dia,
+        jornada,
+        instructor,
+        inicio: { [Op.lt]: fin },
+        fin: { [Op.gt]: inicio }
+      }
+    });
+
+    if (existingAsignacionInstructor) {
+      return res.status(400).json({ 
+        error: `Ya existe una asignación para el instructor ${instructor} en este día y jornada que se superpone con el rango de tiempo proporcionado. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacionInstructor)}`
       });
     }
 
@@ -143,26 +170,37 @@ exports.updateAsignacionById = async (req, res) => {
       });
     }
 
-    const existingAsignacion = await Asignacion.findOne({
+    const existingAsignacionFicha = await Asignacion.findOne({
       where: {
+        ficha,
         dia,
         jornada,
-        instructor, 
-        inicio: {
-          [Op.lt]: fin 
-        },
-        fin: {
-          [Op.gt]: inicio 
-        },
-        id: {
-          [Op.ne]: id
-        }
+        inicio: { [Op.lt]: fin },
+        fin: { [Op.gt]: inicio },
+        id: { [Op.ne]: id }
       }
     });
 
-    if (existingAsignacion) {
+    if (existingAsignacionFicha) {
       return res.status(400).json({ 
-        error: `Ya existe una asignación para el instructor ${instructor} en este día y jornada que se superpone con el rango de tiempo proporcionado. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacion)}` 
+        error: `Ya existe una asignación para la misma ficha en este día, jornada y rango de tiempo. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacionFicha)}`
+      });
+    }
+
+    const existingAsignacionInstructor = await Asignacion.findOne({
+      where: {
+        dia,
+        jornada,
+        instructor,
+        inicio: { [Op.lt]: fin },
+        fin: { [Op.gt]: inicio },
+        id: { [Op.ne]: id }
+      }
+    });
+
+    if (existingAsignacionInstructor) {
+      return res.status(400).json({ 
+        error: `Ya existe una asignación para el instructor ${instructor} en este día y jornada que se superpone con el rango de tiempo proporcionado. Detalles de la asignación conflictiva: ${JSON.stringify(existingAsignacionInstructor)}`
       });
     }
 
@@ -200,9 +238,7 @@ exports.getNumeroAsignacionesPorInstructorYFechas = async (req, res) => {
     const numeroAsignaciones = await Asignacion.count({
       where: {
         instructor,
-        inicio: {
-          [Op.between]: [fechaInicio, fechaFin]  
-        }
+        inicio: { [Op.between]: [fechaInicio, fechaFin] }
       }
     });
 
@@ -211,4 +247,3 @@ exports.getNumeroAsignacionesPorInstructorYFechas = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener el número de asignaciones' });
   }
 };
-
