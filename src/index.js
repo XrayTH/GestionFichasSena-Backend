@@ -11,6 +11,7 @@ const fichaRoutes = require('./routes/fichaRoutes')
 const asignacionRoutes = require('./routes/asignacionRoutes')
 const emailMasivoRoutes = require('./routes/emailMasivoRoutes');
 const emailRoutes = require('./routes/emailRoutes')
+const ambienteRoutes = require('./routes/ambienteRoutes')
 
 const app = express()
 app.use(cors()); 
@@ -29,7 +30,7 @@ app.use('/fichaSenaService', fichaRoutes)
 app.use('/fichaSenaService', asignacionRoutes)
 app.use('/fichaSenaService', emailMasivoRoutes)
 app.use('/fichaSenaService', emailRoutes); 
-
+app.use('/fichaSenaService', ambienteRoutes); 
 
 const PORT = process.env.PORT || 3000
 
