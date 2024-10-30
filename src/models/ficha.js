@@ -25,6 +25,10 @@ const Ficha = db.define('ficha', {
     type: DataTypes.STRING(50),
     allowNull: true,
   },
+  avenida: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  },
   municipio: {
     type: DataTypes.STRING(50),
     allowNull: true,
