@@ -9,6 +9,21 @@ exports.obtenerAmbientes = async (req, res) => {
   }
 };
 
+exports.crearAmbiente = async (req, res) => {
+    try {
+      const { nombre } = req.body; 
+      if (!nombre) {
+        return res.status(400).json({ error: "El nombre del ambiente es requerido" });
+      }
+  
+      const nuevoAmbiente = await Ambiente.create({ nombre });
+  
+      res.status(201).json(nuevoAmbiente);
+    } catch (error) {
+      res.status(500).json({ error: "Error al crear el ambiente" });
+    }
+  };
+
 exports.obtenerAmbientePorId = async (req, res) => {
   try {
     const { id } = req.params;

@@ -3,6 +3,7 @@ const router = express.Router();
 const ambienteController = require('../controllers/ambienteController');
 
 router.get('/ambientes', ambienteController.obtenerAmbientes);
+router.post('/ambientes', ambienteController.crearAmbiente);
 router.get('/ambientes/id/:id', ambienteController.obtenerAmbientePorId);
 router.get('/ambientes/nombre/:nombre', ambienteController.obtenerAmbientePorNombre);
 router.delete('/ambientes/id/:id', ambienteController.eliminarAmbientePorId);
