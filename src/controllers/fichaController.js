@@ -23,7 +23,7 @@ exports.buscarFicha = async (req, res) => {
 };
 
 exports.crearFicha = async (req, res) => {
-  const { codigo, coordinador, programa, gestor, ambiente, municipio, ubicacionGPS, inicio, fin, requerimientos } = req.body;
+  const { codigo, coordinador, programa, gestor, ambiente, municipio, avenida, ubicacionGPS, inicio, fin, requerimientos } = req.body;
   try {
     const nuevaFicha = await Ficha.create({
       codigo,
@@ -32,6 +32,7 @@ exports.crearFicha = async (req, res) => {
       gestor,
       ambiente,
       municipio,
+      avenida,
       ubicacionGPS,
       inicio: inicio || null, 
       fin: fin || null, 
@@ -45,7 +46,7 @@ exports.crearFicha = async (req, res) => {
 
 exports.actualizarFicha = async (req, res) => {
   const { codigo } = req.params;
-  const { coordinador, programa, gestor, ambiente, municipio, ubicacionGPS, inicio, fin, requerimientos } = req.body;
+  const { coordinador, programa, gestor, ambiente, municipio, avenida, ubicacionGPS, inicio, fin, requerimientos } = req.body;
   try {
     const ficha = await Ficha.findOne({ where: { codigo } });
     if (!ficha) return res.status(404).json({ error: 'Ficha no encontrada.' });
@@ -56,6 +57,7 @@ exports.actualizarFicha = async (req, res) => {
       gestor,
       ambiente,
       municipio,
+      avenida,
       ubicacionGPS,
       inicio: inicio || null, 
       fin: fin || null, 
