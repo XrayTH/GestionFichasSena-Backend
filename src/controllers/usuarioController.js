@@ -24,7 +24,7 @@ exports.getUsuarioById = async (req, res) => {
 };
 
 exports.createUsuario = async (req, res) => {
-  const { usuario, contraseña, rol, tablas = 0, verProgramacion = 0, editProgramacion = 0, email = 0, gestionarUsuarios = 0 } = req.body;
+  const { usuario, contraseña, rol, tablas = 0, verProgramacion = 0, editProgramacion = "Ninguno", email = 0, gestionarUsuarios = 0 } = req.body;
 
   if (!usuario || !contraseña) {
     return res.status(400).json({ message: 'Usuario y contraseña son requeridos.' });
@@ -137,7 +137,7 @@ exports.verificarTokenYPermisos = async (req, res) => {
     const permisosDelServidor = {
       tablas: Boolean(usuarioExistente.tablas),
       verProgramacion: Boolean(usuarioExistente.verProgramacion),
-      editProgramacion: Boolean(usuarioExistente.editProgramacion),
+      editProgramacion: usuarioExistente.editProgramacion,
       email: Boolean(usuarioExistente.email),
       gestionarUsuarios: Boolean(usuarioExistente.gestionarUsuarios),
     };

@@ -31,8 +31,8 @@ const Usuario = sequelize.define('Usuario', {
     allowNull: false
   },
   editProgramacion: {  
-    type: DataTypes.TINYINT,
-    defaultValue: 0,
+    type: DataTypes.STRING(50),
+    defaultValue: "Ninguno",
     allowNull: false
   },
   email: {  
