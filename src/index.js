@@ -19,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const IP = process.env.IP || "localhost"
+const IP = process.env.IP || "0.0.0.0"
 const PORT = process.env.PORT || 3000;
 
 const verifySameOrigin = (req, res, next) => {
