@@ -19,8 +19,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const IP = process.env.IP || "localhost"
+const PORT = process.env.PORT || 3000;
+
 const verifySameOrigin = (req, res, next) => {
-  const allowedHost = 'localhost:3001'; 
+  const allowedHost = `${IP}:${PORT}`; 
 
   const host = req.get('Host');
   
@@ -50,8 +53,6 @@ app.use(express.static(buildPath));
 app.get('*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
-
-const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
