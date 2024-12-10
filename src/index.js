@@ -38,7 +38,7 @@ const startServer = async () => {
   try {
     await sequelize.authenticate()
     console.log('Conexión a la base de datos establecida.')
-    app.listen(PORT, () => {
+    app.listen(PORT,'0.0.0.0', () => {
       console.log(`Servidor escuchando en el puerto ${PORT}`)
     })
   } catch (error) {
